@@ -1,5 +1,3 @@
-from django.shortcuts import render
-
 from rest_framework import status, views
 from rest_framework.response import Response
 
@@ -40,3 +38,24 @@ class BeerView(views.APIView):
                 {'message': str(ex)},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
                 )
+
+    def post(self, request, **kwargs):
+
+        try:
+            # import pdb; pdb.set_trace()
+            BeerModel.objects.create(
+                name=request.data.get('name'),
+                beer_type=request.data.get('beer_type'),
+                description=request.data.get('description')
+                )
+
+            return Response(
+                {'message':'OK'},
+                status=status.HTTP_200_OK)
+
+        except Exception as ex:
+
+            return Response(
+                {'message': str(ex)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
