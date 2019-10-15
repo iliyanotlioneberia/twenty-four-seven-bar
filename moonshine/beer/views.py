@@ -1,3 +1,4 @@
+from rest_framework import generics
 from rest_framework import status, views
 from rest_framework.response import Response
 
@@ -59,3 +60,25 @@ class BeerView(views.APIView):
                 {'message': str(ex)},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+
+
+class BeerListView(generics.ListAPIView):
+    queryset = BeerModel.objects.all()
+    serializer_class = BeerModelSerializer
+
+    def get(self, request, *args, **kwargs):
+        """
+            Method:             GET
+            Url:                /api/list/beer/
+            Request headers:
+                                {
+                                    "Content-Type": "application/json",
+                                    "Accept": "application/json",
+                                }
+            Request body:       None
+            Response:
+                                {
+                                    beer.object.all.dict
+                                }
+        """
+        return self.list(request, *args, **kwargs)
