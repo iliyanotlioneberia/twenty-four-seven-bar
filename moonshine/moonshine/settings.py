@@ -25,8 +25,7 @@ SECRET_KEY = '3n=b%3f$31y$6k*449wpd^v4e27q6$4z!kq#u(k3e2l-r#cm+i'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -132,6 +131,4 @@ STATIC_URL = '/staticfiles/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'moonshine', 'staticfiles')
 
 # Extra places for collectstatic to find static files.
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'moonshine', 'staticfiles'),
-)
+STATICFILES_DIRS = ()
