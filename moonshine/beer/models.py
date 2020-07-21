@@ -6,6 +6,7 @@ from django.db import models
 class BeerModel(models.Model):
 
     class Meta:
+        verbose_name = "Beer"
         verbose_name_plural = "Beers"
 
     def __str__(self):
