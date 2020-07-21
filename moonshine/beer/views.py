@@ -8,8 +8,6 @@ from beer.serializers import BeerModelSerializer
 
 class BeerView(views.APIView):
 
-    serializer_class = BeerModelSerializer
-
     def get(self, request, pk=None):
         """
             Method:             GET
@@ -27,31 +25,37 @@ class BeerView(views.APIView):
         """
         try:
             beer = BeerModel.objects.get(id=pk)
-            beer_serializer = self.serializer_class(beer)
+            beer_serializer = BeerModelSerializer(beer)
 
             return Response(
                 beer_serializer.data,
                 status=status.HTTP_200_OK)
 
-        except Exception as ex:
+        except Exception as e:
 
             return Response(
-                {'message': str(ex)},
+                {'message': str(e)},
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
                 )
 
     def post(self, request):
+        try:
+            beer = BeerModel.objects.create(
+                name = request.data.get('name'),
+                beer_type = request.data.get('beer_type'),
+                description = request.data.get('description'))
 
-        beer = BeerModel.objects.create(
-            name=request.data.get('name'),
-            beer_type=request.data.get('beer_type'),
-            description=request.data.get('description'))
+            beer.save()
+            return Response(
+                {'message':'OK'},
+                 status=status.HTTP_200_OK
+                )
 
-        beer.save()
-        if beer:
-            return Response({'message':'OK'}, status=status.HTTP_200_OK)
-
-        return Response({'message': 'An error occured'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except Exception as e:
+            return Response(
+                {'message': str(e)},
+                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                )
 
 
 class BeerListView(generics.ListAPIView):
