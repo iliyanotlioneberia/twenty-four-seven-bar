@@ -40,26 +40,18 @@ class BeerView(views.APIView):
                 status=status.HTTP_500_INTERNAL_SERVER_ERROR
                 )
 
-    def post(self, request, **kwargs):
+    def post(self, request):
 
-        try:
-            # import pdb; pdb.set_trace()
-            BeerModel.objects.create(
-                name=request.data.get('name'),
-                beer_type=request.data.get('beer_type'),
-                description=request.data.get('description')
-                )
+        beer = BeerModel.objects.create(
+            name=request.data.get('name'),
+            beer_type=request.data.get('beer_type'),
+            description=request.data.get('description'))
 
-            return Response(
-                {'message':'OK'},
-                status=status.HTTP_200_OK)
+        beer.save()
+        if beer:
+            return Response({'message':'OK'}, status=status.HTTP_200_OK)
 
-        except Exception as ex:
-
-            return Response(
-                {'message': str(ex)},
-                status=status.HTTP_500_INTERNAL_SERVER_ERROR
-            )
+        return Response({'message': 'An error occured'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class BeerListView(generics.ListAPIView):
@@ -69,7 +61,7 @@ class BeerListView(generics.ListAPIView):
     def get(self, request, *args, **kwargs):
         """
             Method:             GET
-            Url:                /api/list/beer/
+            Url:                /api/beers/
             Request headers:
                                 {
                                     "Content-Type": "application/json",
