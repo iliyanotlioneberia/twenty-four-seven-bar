@@ -13,6 +13,7 @@ class BeerModelSerializer(serializers.ModelSerializer):
         model = BeerModel
 
         fields = (
+            'id',
             'name',
             'beer_type',
             'description',
