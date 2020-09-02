@@ -43,7 +43,6 @@ class BeerView(views.APIView):
     def post(self, request, **kwargs):
 
         try:
-            # import pdb; pdb.set_trace()
             BeerModel.objects.create(
                 name=request.data.get('name'),
                 beer_type=request.data.get('beer_type'),
